@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Check backend formatting
+        working-directory: backend
+        run: npm run format-check
+
+      - name: Run backend tests
+        working-directory: backend
+        env:
+          SQLITE_DB_LOCATION: /tmp/todo.db
+        run: npm test
+
+      - name: Install client dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Lint client
+        working-directory: client
+        run: npm run lint
+
+      - name: Build client
+        working-directory: client
+        run: npm run build
+
+      - name: Build backend Docker image
+        run: docker build -t todo-backend:ci -f Dockerfile .
+
+      - name: Build client Docker image
+        run: docker build -t todo-client:ci -f client/Dockerfile .
