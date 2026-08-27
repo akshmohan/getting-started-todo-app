@@ -34,3 +34,7 @@ const gracefulShutdown = () => {
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);
 process.on('SIGUSR2', gracefulShutdown); // Sent by nodemon
+
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+});

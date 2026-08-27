@@ -1,13 +1,13 @@
-FROM node:22
+FROM node:20-bookworm-slim
 
 WORKDIR /app
 
 COPY backend/package*.json ./
 
-RUN npm install
+RUN npm ci --omit=dev
 
 COPY backend/src ./src
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["node", "src/index.js"]
