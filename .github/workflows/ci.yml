@@ -39,6 +39,11 @@ jobs:
           SQLITE_DB_LOCATION: /tmp/todo.db
         run: npm test
 
+      - name: SonarQube analysis
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: Install client dependencies
         working-directory: client
         run: npm ci
@@ -98,3 +103,4 @@ jobs:
       - name: Push client Docker image
         if: github.event_name == 'push'
         run: docker push ghcr.io/${{ github.repository }}/todo-client:${{ github.sha }}
+        
