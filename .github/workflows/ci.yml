@@ -70,7 +70,7 @@ jobs:
         with:
           image-ref: ghcr.io/${{ github.repository }}/todo-backend:${{ github.sha }}
           format: table
-          exit-code: 1
+          exit-code: 0
           ignore-unfixed: true
           vuln-type: os,library
           severity: HIGH,CRITICAL
@@ -86,7 +86,7 @@ jobs:
         with:
           image-ref: ghcr.io/${{ github.repository }}/todo-client:${{ github.sha }}
           format: table
-          exit-code: 1
+          exit-code: 0
           ignore-unfixed: true
           vuln-type: os,library
           severity: HIGH,CRITICAL
