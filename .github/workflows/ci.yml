@@ -65,11 +65,31 @@ jobs:
             -t ghcr.io/${{ github.repository }}/todo-backend:${{ github.sha }} \
             -f Dockerfile .
 
+      - name: Scan backend image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ghcr.io/${{ github.repository }}/todo-backend:${{ github.sha }}
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: HIGH,CRITICAL
+
       - name: Build client Docker image
         run: |
           docker build \
             -t ghcr.io/${{ github.repository }}/todo-client:${{ github.sha }} \
             -f client/Dockerfile .
+
+      - name: Scan client image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ghcr.io/${{ github.repository }}/todo-client:${{ github.sha }}
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: HIGH,CRITICAL
 
       - name: Push backend Docker image
         if: github.event_name == 'push'

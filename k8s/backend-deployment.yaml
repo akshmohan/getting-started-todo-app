@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: todo-backend:ci
-          imagePullPolicy: Never
+          image: ghcr.io/akshmohan/getting-started-todo-app/todo-backend:6ecd214f0f85da744f0bc853bbaf37a303780ba5
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
 
