@@ -5,18 +5,21 @@
   "scripts": {
     "format": "prettier -l --write \"**/*.js\"",
     "format-check": "prettier --check \"**/*.js\"",
-    "test": "jest",
+    "test": "jest --coverage",
     "dev": "nodemon src/index.js"
   },
   "dependencies": {
     "express": "^5.1.0",
     "mysql2": "^3.14.1",
-    "sqlite3": "^5.1.7",
+    "sqlite3": "^6.0.1",
     "uuid": "^11.1.0",
     "wait-port": "^1.1.0"
   },
   "resolutions": {
     "@babel/core": "7.23.9"
+  },
+  "overrides": {
+    "tar-fs": "2.1.4"
   },
   "prettier": {
     "trailingComma": "all",
