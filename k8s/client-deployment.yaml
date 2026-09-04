@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: todo-client
-  annotations:
-    gitops-test: "enabled"
 spec:
   replicas: 1
   selector:
