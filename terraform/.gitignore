@@ -1,0 +1,17 @@
+# Terraform state
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform.tfstate.lock.info
+
+# Terraform plan files
+tfplan
+tfplan.*
+*.tfplan
+
+# Provider cache
+.terraform/
+
+# Crash logs
+crash.log
+crash.*.log
