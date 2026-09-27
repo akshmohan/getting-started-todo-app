@@ -5,8 +5,7 @@ module "vpc" {
   name = "todo-vpc"
   cidr = "10.0.0.0/16"
 
-  azs = ["ap-south-1a", "ap-south-1b"]
-
+  azs             = ["ap-south-1a", "ap-south-1b"]
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
 
@@ -15,6 +14,27 @@ module "vpc" {
 
   enable_dns_hostnames = true
   enable_dns_support   = true
+
+  tags = {
+    Project     = "getting-started-todo-app"
+    Environment = "dev"
+    ManagedBy   = "Terraform"
+  }
+}
+
+module "ebs_csi_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name             = "todo-eks-ebs-csi"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
 
   tags = {
     Project     = "getting-started-todo-app"
@@ -38,8 +58,6 @@ module "eks" {
   endpoint_public_access  = true
   endpoint_private_access = true
 
-  # Core EKS add-ons
-  # vpc-cni MUST be installed before the node group, or nodes never become Ready
   addons = {
     coredns = {
       most_recent = true
@@ -49,7 +67,11 @@ module "eks" {
     }
     vpc-cni = {
       most_recent    = true
-      before_compute = true # ⬅️ THE FIX
+      before_compute = true
+    }
+    aws-ebs-csi-driver = {
+      most_recent              = true
+      service_account_role_arn = module.ebs_csi_irsa.iam_role_arn
     }
   }
 
@@ -80,14 +102,4 @@ module "eks" {
     Environment = "dev"
     ManagedBy   = "Terraform"
   }
-}
-
-resource "aws_security_group_rule" "node_to_primary_443" {
-  type                     = "ingress"
-  from_port                = 443
-  to_port                  = 443
-  protocol                 = "tcp"
-  security_group_id        = "sg-039f0462f7db44bc5"
-  source_security_group_id = "sg-01abc879c9e3513be"
-  description              = "Nodes to EKS API server"
 }
