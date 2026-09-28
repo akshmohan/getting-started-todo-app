@@ -29,7 +29,7 @@ spec:
               echo "MySQL is reachable."
       containers:
         - name: todo-backend
-          image: 015048356322.dkr.ecr.ap-south-1.amazonaws.com/todo-backend:8df55ec9e2468827b56951c5b2468cb0cd9ccf14
+          image: 015048356322.dkr.ecr.ap-south-1.amazonaws.com/todo-backend:994f37d50176137fb79a4dcf76815f81c277b8fe
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
