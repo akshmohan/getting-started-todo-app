@@ -12,3 +12,9 @@ output "ecr_client_repo_url" {
   description = "ECR repo URL for the client image"
   value       = "015048356322.dkr.ecr.ap-south-1.amazonaws.com/todo-client"
 }
+
+output "lb_controller_role_arn" {
+  description = "IAM role ARN for the AWS Load Balancer Controller (via EKS Pod Identity)"
+  value       = aws_iam_role.lb_controller.arn
+}
+
