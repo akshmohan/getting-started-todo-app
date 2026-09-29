@@ -22,9 +22,13 @@ resource "aws_s3_bucket" "tfstate" {
     ManagedBy   = "Terraform"
     Purpose     = "terraform-remote-state"
   }
+  
+  # NOTE: prevent_destroy is intentionally false for this learning project.
+  # The state bucket gets destroyed along with everything else on `terraform destroy`
+  # and recreated on the next `terraform apply`. For production, set this to true.
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
