@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: todo-client
-          image: 015048356322.dkr.ecr.ap-south-1.amazonaws.com/todo-client:46fd7231a7c1c15bbcc2d4097fa3ac2ff7f50ad9
+          image: 015048356322.dkr.ecr.ap-south-1.amazonaws.com/todo-client:0c95db5be7b043e807149e59a9d5e9eceb4fb423
           imagePullPolicy: Always
           ports:
             - containerPort: 80
